@@ -69,6 +69,10 @@ module SimpleGeo
         endpoint_url "locate/#{ip}.json"
       end
 
+      def geocode(address)
+        endpoint_url URI.encode("geocode/address.json?q=\"#{address}\"")
+      end
+
       def endpoint_url(path)
         [REALM, API_VERSION, path].join('/')
       end

@@ -1162,6 +1162,21 @@ describe "Client" do
     end
   end
 
+  context "geocoding an address" do
+    before do
+      @address = '41 Decatur St, San Francisco, CA'
+      url = "http://api.simplegeo.com/0.1/geocode/address.json?q=\"#{@address}\""
+      uri = URI.parse(URI.encode(url))
+      stub_request :get, uri, :fixture_file => 'geocoding.json'
+    end
+
+    it 'should return a hash with the correct info' do 
+      info = SimpleGeo::Client.geocode(@address)
+      info[:features][0][:geometry][:coordinates].should == [-122.406032, 37.772502]
+      info[:address].should == @address
+    end
+  end
+
   # this API call seems to always return a 404
   # context "getting boundary info by id" do
   #   before do
